@@ -527,7 +527,7 @@ export default function AutoComparador() {
 
         <section className="mt-14">
           <h3 className="font-display text-2xl md:text-3xl glow-title" style={{ color: 'var(--foreground)' }}>
-            Lo que importa (y por qué)
+            Lo que importa (y por qué)asd
           </h3>
           <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
