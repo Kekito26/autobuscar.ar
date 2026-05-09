@@ -121,7 +121,9 @@ function LineChart({ data, darkMode }) {
 
 // ─── PÁGINA ────────────────────────────────────────────────────────────────
 export default function TendenciaPage() {
+    <Suspense fallback={<div>Cargando filtros...</div>}>
   const searchParams   = useSearchParams();
+  </Suspense>
   const query          = searchParams.get('q') || '';
   const [darkMode, setDarkMode]     = useState(false);
   const [mounted, setMounted]       = useState(false);
