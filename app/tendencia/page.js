@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 // ─── Generador de datos históricos simulados ───────────────────────────────
 function generatePriceTrend(query, filters = {}) {
