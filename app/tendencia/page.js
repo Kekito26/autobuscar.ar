@@ -300,7 +300,7 @@ export default function TendenciaPage() {
             <div className="rounded-2xl border p-5 text-sm" style={{ borderColor: 'var(--border)', background: 'color-mix(in srgb,var(--background-card),transparent 30%)' }} data-testid="tendencia-disclaimer">
               <div className="font-semibold mb-2" style={{ color: 'var(--foreground)' }}>⚠️ Nota importante</div>
               <p style={{ color: 'var(--foreground-muted)' }}>
-                Los datos de tendencia son estimaciones generadas a partir de modelos de depreciación típica del mercado argentino y la inflación histórica. No representan datos de transacciones reales. Próximamente integraremos datos reales de publicaciones cerradas y vendidas de los marketplaces integrados.
+                Los datos de tendencia son estimaciones generadas a partir de modelos de depreciación típica del mercado argentino y la inflación histórica. No representan datos de transacciones reales. Próximamente integraremos datos reales de publicaciones cerradas y vendidas de los marketplaces integrados. Gracias por tu comprensión y paciencia mientras seguimos mejorando esta funcionalidad.
               </p>
             </div>
 
