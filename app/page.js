@@ -40,10 +40,8 @@ export default function AutoComparador() {
     state: '',
   });
 
-  // Default to ALL sources enabled (as requested)
   const [selectedSources, setSelectedSources] = useState(buildDefaultSources);
 
-  // Persist theme and apply to document
   useEffect(() => {
     setMounted(true);
     const stored = localStorage.getItem('autobuscar-theme');
@@ -59,7 +57,6 @@ export default function AutoComparador() {
     localStorage.setItem('autobuscar-theme', next ? 'dark' : 'light');
   };
 
-  // Hero fade (only while hero is visible)
   useEffect(() => {
     const onScroll = () => {
       const heroEl = heroRef.current;
@@ -139,48 +136,71 @@ export default function AutoComparador() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--background)' }}>
+      <div 
+        className="min-h-screen flex items-center justify-center" 
+        style={{ background: 'var(--background)' }}
+        data-testid="loading-screen"
+      >
         <div className="text-lg" style={{ color: 'var(--foreground-muted)' }}>Cargando…</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
+    <div className="min-h-screen" style={{ background: 'var(--background)' }} data-testid="main-container">
       {/* Top nav */}
       <header
         className="sticky top-0 z-50 border-b transition-colors duration-300 glass"
         style={{ borderColor: 'var(--border)', boxShadow: 'var(--shadow)' }}
+        data-testid="header"
+        role="banner"
       >
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex flex-col items-center justify-center text-center gap-3">
             <div className="flex flex-col leading-tight">
-              <span className="font-display text-xl md:text-2xl glow-title" style={{ color: 'var(--foreground)' }}>
+              <span 
+                className="font-display text-xl md:text-2xl glow-title" 
+                style={{ color: 'var(--accent-primary)' }}
+                data-testid="site-title"
+              >
                 AutoBuscar.ar
               </span>
-              <span className="text-xs md:text-sm" style={{ color: 'var(--foreground-muted)' }}>
+              <span 
+                className="text-xs md:text-sm" 
+                style={{ color: 'var(--foreground-muted)' }}
+                data-testid="site-subtitle"
+              >
                 Buscador unificado de autos • Argentina
               </span>
             </div>
-          </div>
 
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="btn-soft flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-colors"
-            style={{ borderColor: 'var(--border)', color: 'var(--foreground)', background: 'var(--background-card)' }}
-            aria-label={darkMode ? 'Activar modo claro' : 'Activar modo oscuro'}
-          >
-            <span className="w-5 h-5 rounded-full border-2 flex items-center justify-center" style={{ borderColor: 'var(--foreground-muted)' }}>
-              {darkMode ? <span className="w-2 h-2 rounded-full" style={{ background: 'var(--foreground)' }} /> : null}
-            </span>
-            <span>{darkMode ? 'Claro' : 'Oscuro'}</span>
-          </button>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="btn-soft flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-colors"
+              style={{ borderColor: 'var(--border)', color: 'var(--foreground)', background: 'var(--background-card)' }}
+              aria-label={darkMode ? 'Activar modo claro' : 'Activar modo oscuro'}
+              data-testid="theme-toggle"
+              role="switch"
+              aria-checked={darkMode}
+            >
+              <span className="w-5 h-5 rounded-full border-2 flex items-center justify-center" style={{ borderColor: 'var(--foreground-muted)' }}>
+                {darkMode ? <span className="w-2 h-2 rounded-full" style={{ background: 'var(--foreground)' }} /> : null}
+              </span>
+              <span>{darkMode ? 'Claro' : 'Oscuro'}</span>
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section ref={heroRef} className="relative overflow-hidden">
+      <section 
+        ref={heroRef} 
+        className="relative overflow-hidden"
+        data-testid="hero-section"
+        role="region"
+        aria-label="Hero section"
+      >
         <div className="absolute inset-0 hero-bg" style={{ opacity: heroOpacity }} aria-hidden>
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${HERO_IMAGE})` }} />
           <div
@@ -197,16 +217,25 @@ export default function AutoComparador() {
           <div className="max-w-3xl animate-fade-in-up">
             <div
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs mb-5"
-              style={{ borderColor: 'var(--border)', color: 'var(--foreground-muted)', background: 'color-mix(in srgb, var(--background-card), transparent 10%)' }}
+              style={{ borderColor: 'var(--border)', color: 'var(--accent-secondary)', background: 'color-mix(in srgb, var(--background-card), transparent 10%)' }}
+              data-testid="hero-badge"
             >
-              <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />
+              <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-secondary)' }} />
               Compará en un solo lugar
             </div>
 
-            <h2 className="font-display glow-title text-4xl md:text-6xl leading-[1.05] mb-5" style={{ color: 'var(--foreground)' }}>
+            <h2 
+              className="font-display glow-title-hero text-4xl md:text-6xl leading-[1.05] mb-5" 
+              style={{ color: 'var(--accent-primary)' }}
+              data-testid="hero-title"
+            >
               Encontrá tu próximo auto en Argentina
             </h2>
-            <p className="text-base md:text-lg mb-7" style={{ color: 'var(--foreground-soft)' }}>
+            <p 
+              className="text-base md:text-lg mb-7" 
+              style={{ color: 'var(--foreground-soft)' }}
+              data-testid="hero-description"
+            >
               AutoBuscar reúne publicaciones de múltiples marketplaces y te permite filtrar por año, kilometraje, marca, modelo y ubicación.
               La idea es simple: menos pestañas, mejores decisiones.
             </p>
@@ -216,7 +245,9 @@ export default function AutoComparador() {
                 type="button"
                 onClick={() => document.getElementById('search')?.scrollIntoView({ behavior: 'smooth' })}
                 className="btn-soft px-6 py-3 rounded-xl font-semibold text-white"
-                style={{ background: 'var(--accent)' }}
+                style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))' }}
+                data-testid="hero-cta-search"
+                aria-label="Ir a la búsqueda"
               >
                 Empezar a buscar
               </button>
@@ -224,20 +255,27 @@ export default function AutoComparador() {
                 href="#how"
                 className="btn-soft px-6 py-3 rounded-xl font-semibold border text-center"
                 style={{ borderColor: 'var(--border)', color: 'var(--foreground)', background: 'var(--background-card)' }}
+                data-testid="hero-cta-how"
+                aria-label="Cómo funciona"
               >
                 Cómo funciona
               </a>
             </div>
 
-            <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3" data-testid="hero-features">
               {[
                 { k: 'Búsqueda unificada', v: '1 consulta → varios sitios' },
                 { k: 'Filtros útiles', v: 'año, km, provincia' },
                 { k: 'Transparente', v: 'link al aviso original' },
                 { k: 'Rápido', v: 'pensado para mobile' },
-              ].map((item) => (
-                <div key={item.k} className="rounded-xl border p-3" style={{ borderColor: 'var(--border)', background: 'color-mix(in srgb, var(--background-card), transparent 10%)' }}>
-                  <div className="text-xs mb-1" style={{ color: 'var(--foreground-muted)' }}>{item.k}</div>
+              ].map((item, idx) => (
+                <div 
+                  key={item.k} 
+                  className="rounded-xl border p-3" 
+                  style={{ borderColor: 'var(--border)', background: 'color-mix(in srgb, var(--background-card), transparent 10%)' }}
+                  data-testid={`hero-feature-${idx}`}
+                >
+                  <div className="text-xs mb-1" style={{ color: 'var(--accent-tertiary)' }}>{item.k}</div>
                   <div className="text-sm font-semibold" style={{ color: 'var(--foreground)' }}>{item.v}</div>
                 </div>
               ))}
@@ -247,24 +285,38 @@ export default function AutoComparador() {
       </section>
 
       {/* Search module */}
-      <main id="search" className="max-w-7xl mx-auto px-4 -mt-8 md:-mt-10 pb-16 relative z-20">
+      <main 
+        id="search" 
+        className="max-w-7xl mx-auto px-4 -mt-8 md:-mt-10 pb-16 relative z-20"
+        data-testid="search-section"
+        role="main"
+      >
         <div
           className="rounded-2xl p-6 md:p-8 mb-10 animate-scale-in"
           style={{ background: 'var(--background-card)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-lg)' }}
+          data-testid="search-form-container"
         >
           <div className="flex flex-col md:flex-row gap-3">
             <div className="flex-1">
-              <label className="block text-xs font-medium mb-2" style={{ color: 'var(--foreground-muted)' }}>
+              <label 
+                htmlFor="search-input" 
+                className="block text-xs font-medium mb-2" 
+                style={{ color: 'var(--foreground-muted)' }}
+              >
                 Búsqueda
               </label>
               <input
+                id="search-input"
                 type="text"
                 placeholder="Ej: Ford Focus 2018"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && searchCars()}
-                className="w-full px-4 py-3.5 rounded-xl text-base border transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+                className="w-full px-4 py-3.5 rounded-xl text-base border transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent"
                 style={{ borderColor: 'var(--border)', background: 'var(--background)', color: 'var(--foreground)' }}
+                data-testid="search-input"
+                aria-label="Buscar auto"
+                role="searchbox"
               />
             </div>
             <div className="flex items-end">
@@ -273,7 +325,10 @@ export default function AutoComparador() {
                 onClick={searchCars}
                 disabled={loading}
                 className="btn-soft w-full md:w-auto px-10 py-3.5 rounded-xl font-semibold text-white disabled:opacity-50"
-                style={{ background: 'var(--accent)' }}
+                style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))' }}
+                data-testid="search-button"
+                aria-label="Buscar autos"
+                aria-busy={loading}
               >
                 {loading ? 'Buscando...' : 'Buscar'}
               </button>
@@ -285,45 +340,71 @@ export default function AutoComparador() {
               type="button"
               onClick={() => setShowFilters(!showFilters)}
               className="link-soft text-sm font-medium"
-              style={{ color: 'var(--accent)' }}
+              style={{ color: 'var(--accent-primary)' }}
+              data-testid="toggle-filters-button"
+              aria-expanded={showFilters}
+              aria-controls="advanced-filters"
             >
               {showFilters ? 'Ocultar filtros avanzados' : 'Filtros avanzados'}
             </button>
 
-            <div className="text-sm" style={{ color: 'var(--foreground-muted)' }}>
-              Por defecto buscamos en <strong style={{ color: 'var(--foreground)' }}>todas</strong> las fuentes disponibles.
+            <div 
+              className="text-sm" 
+              style={{ color: 'var(--foreground-muted)' }}
+              data-testid="default-sources-info"
+            >
+              Por defecto buscamos en <strong style={{ color: 'var(--accent-secondary)' }}>todas</strong> las fuentes disponibles.
             </div>
           </div>
 
           {showFilters && (
-            <div className="mt-5 border-t pt-5 animate-fade-in" style={{ borderColor: 'var(--border)' }}>
+            <div 
+              id="advanced-filters"
+              className="mt-5 border-t pt-5 animate-fade-in" 
+              style={{ borderColor: 'var(--border)' }}
+              data-testid="advanced-filters"
+              role="region"
+              aria-label="Filtros avanzados"
+            >
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                 {[
-                  { key: 'year', label: 'Año', placeholder: '2020' },
-                  { key: 'minKm', label: 'KM mín', placeholder: '0' },
-                  { key: 'maxKm', label: 'KM máx', placeholder: '100000' },
-                  { key: 'brand', label: 'Marca', placeholder: 'Ford' },
-                  { key: 'model', label: 'Modelo', placeholder: 'Focus' },
-                  { key: 'state', label: 'Provincia', placeholder: 'Buenos Aires' },
-                ].map(({ key, label, placeholder }) => (
+                  { key: 'year', label: 'Año', placeholder: '2020', type: 'number' },
+                  { key: 'minKm', label: 'KM mín', placeholder: '0', type: 'number' },
+                  { key: 'maxKm', label: 'KM máx', placeholder: '100000', type: 'number' },
+                  { key: 'brand', label: 'Marca', placeholder: 'Ford', type: 'text' },
+                  { key: 'model', label: 'Modelo', placeholder: 'Focus', type: 'text' },
+                  { key: 'state', label: 'Provincia', placeholder: 'Buenos Aires', type: 'text' },
+                ].map(({ key, label, placeholder, type }) => (
                   <div key={key}>
-                    <label className="block text-xs font-medium mb-1" style={{ color: 'var(--foreground-muted)' }}>
+                    <label 
+                      htmlFor={`filter-${key}`}
+                      className="block text-xs font-medium mb-1" 
+                      style={{ color: 'var(--foreground-muted)' }}
+                    >
                       {label}
                     </label>
                     <input
-                      type={key === 'year' || key === 'minKm' || key === 'maxKm' ? 'number' : 'text'}
+                      id={`filter-${key}`}
+                      type={type}
                       placeholder={placeholder}
                       value={filters[key]}
                       onChange={(e) => setFilters({ ...filters, [key]: e.target.value })}
-                      className="w-full px-3 py-2 rounded-lg border text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+                      className="w-full px-3 py-2 rounded-lg border text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent"
                       style={{ borderColor: 'var(--border)', background: 'var(--background)', color: 'var(--foreground)' }}
+                      data-testid={`filter-${key}`}
+                      aria-label={`Filtrar por ${label.toLowerCase()}`}
                     />
                   </div>
                 ))}
               </div>
 
-              {/* Sources selection inside advanced filters */}
-              <div className="mt-5 rounded-xl border p-4" style={{ borderColor: 'var(--border)', background: 'color-mix(in srgb, var(--background), transparent 0%)' }}>
+              <div 
+                className="mt-5 rounded-xl border p-4" 
+                style={{ borderColor: 'var(--border)', background: 'color-mix(in srgb, var(--background), transparent 0%)' }}
+                data-testid="sources-selector"
+                role="group"
+                aria-label="Selección de fuentes"
+              >
                 <div className="flex items-center justify-between gap-4 mb-3">
                   <div>
                     <div className="text-sm font-semibold" style={{ color: 'var(--foreground)' }}>Fuentes</div>
@@ -337,6 +418,8 @@ export default function AutoComparador() {
                       className="btn-soft text-xs px-3 py-2 rounded-lg border"
                       style={{ borderColor: 'var(--border)', color: 'var(--foreground)', background: 'var(--background-card)' }}
                       onClick={() => setSelectedSources(buildDefaultSources())}
+                      data-testid="select-all-sources"
+                      aria-label="Seleccionar todas las fuentes"
                     >
                       Seleccionar todas
                     </button>
@@ -352,20 +435,28 @@ export default function AutoComparador() {
                           }, {})
                         )
                       }
+                      data-testid="deselect-all-sources"
+                      aria-label="Deseleccionar todas las fuentes"
                     >
                       Ninguna
                     </button>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-3" role="group" aria-label="Fuentes disponibles">
                   {ALL_SOURCES.map((s) => (
-                    <label key={s.key} className="flex items-center gap-2 cursor-pointer text-sm">
+                    <label 
+                      key={s.key} 
+                      className="flex items-center gap-2 cursor-pointer text-sm"
+                      data-testid={`source-${s.key}-label`}
+                    >
                       <input
                         type="checkbox"
                         checked={!!selectedSources[s.key]}
                         onChange={(e) => setSelectedSources({ ...selectedSources, [s.key]: e.target.checked })}
                         className="rounded border"
                         style={{ borderColor: 'var(--border)' }}
+                        data-testid={`source-${s.key}-checkbox`}
+                        aria-label={`Usar fuente ${s.label}`}
                       />
                       <span style={{ color: 'var(--foreground-muted)' }}>{s.label}</span>
                     </label>
@@ -377,12 +468,22 @@ export default function AutoComparador() {
         </div>
 
         {stats && (
-          <div className="mb-6 flex flex-wrap gap-4 text-sm animate-fade-in" style={{ color: 'var(--foreground-muted)' }}>
-            <span>
-              Resultados: <strong style={{ color: 'var(--foreground)' }}>{stats.total}</strong>
+          <div 
+            className="mb-6 flex flex-wrap gap-4 text-sm animate-fade-in" 
+            style={{ color: 'var(--foreground-muted)' }}
+            data-testid="search-stats"
+            role="status"
+            aria-live="polite"
+          >
+            <span data-testid="total-results">
+              Resultados: <strong style={{ color: 'var(--accent-primary)' }}>{stats.total}</strong>
             </span>
             {Object.entries(stats.sources || {}).map(([source, data]) => (
-              <span key={source} className={data.success ? 'text-emerald-600' : 'text-red-500'}>
+              <span 
+                key={source} 
+                style={{ color: data.success ? 'var(--success)' : '#ef4444' }}
+                data-testid={`source-stat-${source}`}
+              >
                 {source}: {data.success ? `${data.count}` : 'Error'}
               </span>
             ))}
@@ -390,52 +491,97 @@ export default function AutoComparador() {
         )}
 
         {listings.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
+          <div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger"
+            data-testid="results-grid"
+            role="list"
+            aria-label="Resultados de búsqueda"
+          >
             {listings.map((listing, i) => (
-              <div
+              <article
                 key={listing.id}
                 className="card-hover rounded-2xl overflow-hidden border"
                 style={{ background: 'var(--background-card)', borderColor: 'var(--border)', boxShadow: 'var(--shadow)' }}
+                data-testid={`listing-card-${i}`}
+                role="listitem"
               >
                 <div className="aspect-[16/10] bg-slate-200 dark:bg-slate-700 overflow-hidden">
                   {listing.thumbnail ? (
-                    <img src={listing.thumbnail} alt="" className="w-full h-full object-cover" />
+                    <img 
+                      src={listing.thumbnail} 
+                      alt={`Imagen de ${listing.title}`} 
+                      className="w-full h-full object-cover"
+                      data-testid={`listing-image-${i}`}
+                    />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-4xl font-light" style={{ color: 'var(--foreground-muted)' }}>—</div>
+                    <div 
+                      className="w-full h-full flex items-center justify-center text-4xl font-light" 
+                      style={{ color: 'var(--foreground-muted)' }}
+                      data-testid={`listing-no-image-${i}`}
+                    >
+                      —
+                    </div>
                   )}
                 </div>
                 <div className="p-5">
-                  <span className={`inline-block px-2 py-1 rounded-lg text-xs font-medium mb-2 ${getSourceBadgeColor(listing.source)}`}>
+                  <span 
+                    className={`inline-block px-2 py-1 rounded-lg text-xs font-medium mb-2 ${getSourceBadgeColor(listing.source)}`}
+                    data-testid={`listing-source-${i}`}
+                  >
                     {listing.source}
                   </span>
-                  <h3 className="font-semibold text-lg mb-2 line-clamp-2" style={{ color: 'var(--foreground)' }}>{listing.title}</h3>
-                  <p className="text-xl font-bold mb-4" style={{ color: 'var(--success)' }}>
+                  <h3 
+                    className="font-semibold text-lg mb-2 line-clamp-2" 
+                    style={{ color: 'var(--foreground)' }}
+                    data-testid={`listing-title-${i}`}
+                  >
+                    {listing.title}
+                  </h3>
+                  <p 
+                    className="text-xl font-bold mb-4" 
+                    style={{ color: 'var(--success)' }}
+                    data-testid={`listing-price-${i}`}
+                  >
                     ${listing.price?.toLocaleString('es-AR')}
                   </p>
-                  <div className="text-sm space-y-1 mb-4" style={{ color: 'var(--foreground-muted)' }}>
-                    {listing.year && <p>Año {listing.year}</p>}
-                    {listing.km && <p>{listing.km.toLocaleString('es-AR')} km</p>}
-                    <p>{listing.location}</p>
+                  <div 
+                    className="text-sm space-y-1 mb-4" 
+                    style={{ color: 'var(--foreground-muted)' }}
+                    data-testid={`listing-details-${i}`}
+                  >
+                    {listing.year && <p data-testid={`listing-year-${i}`}>Año {listing.year}</p>}
+                    {listing.km && <p data-testid={`listing-km-${i}`}>{listing.km.toLocaleString('es-AR')} km</p>}
+                    <p data-testid={`listing-location-${i}`}>{listing.location}</p>
                   </div>
                   <a
                     href={listing.permalink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="link-soft btn-soft block text-center py-3 rounded-xl font-semibold text-white"
-                    style={{ background: 'var(--accent)' }}
+                    style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))' }}
+                    data-testid={`listing-link-${i}`}
+                    aria-label={`Ver publicación de ${listing.title}`}
                   >
                     Ver publicación
                   </a>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         )}
 
         {!loading && listings.length === 0 && !searchTerm && (
-          <div className="text-center py-16 rounded-2xl border animate-fade-in" style={{ background: 'var(--background-card)', borderColor: 'var(--border)' }}>
+          <div 
+            className="text-center py-16 rounded-2xl border animate-fade-in" 
+            style={{ background: 'var(--background-card)', borderColor: 'var(--border)' }}
+            data-testid="empty-state-initial"
+            role="status"
+          >
             <div className="max-w-xl mx-auto px-6">
-              <h3 className="font-display text-2xl md:text-3xl glow-title mb-3" style={{ color: 'var(--foreground)' }}>
+              <h3 
+                className="font-display text-2xl md:text-3xl glow-title mb-3" 
+                style={{ color: 'var(--accent-primary)' }}
+              >
                 Buscá. Compará. Elegí mejor.
               </h3>
               <p style={{ color: 'var(--foreground-muted)' }}>
@@ -446,20 +592,44 @@ export default function AutoComparador() {
         )}
 
         {!loading && listings.length === 0 && searchTerm && (
-          <div className="text-center py-16 rounded-2xl border animate-fade-in" style={{ background: 'var(--background-card)', borderColor: 'var(--border)' }}>
+          <div 
+            className="text-center py-16 rounded-2xl border animate-fade-in" 
+            style={{ background: 'var(--background-card)', borderColor: 'var(--border)' }}
+            data-testid="empty-state-no-results"
+            role="status"
+            aria-live="polite"
+          >
             <div className="max-w-xl mx-auto px-6">
-              <h3 className="font-display text-xl md:text-2xl glow-title mb-2" style={{ color: 'var(--foreground)' }}>
+              <h3 
+                className="font-display text-xl md:text-2xl glow-title mb-2" 
+                style={{ color: 'var(--accent-primary)' }}
+              >
                 No encontramos resultados
               </h3>
-              <p style={{ color: 'var(--foreground-muted)' }}>Probá con un término más general o ajustá filtros/fuentes.</p>
+              <p style={{ color: 'var(--foreground-muted)' }}>
+                Probá con un término más general o ajustá filtros/fuentes.
+              </p>
             </div>
           </div>
         )}
 
+        {/* Separador visual */}
+        <div className="my-16 border-t" style={{ borderColor: 'var(--border)' }} />
+
         {/* Landing sections */}
-        <section id="how" className="mt-14 md:mt-18">
+        <section 
+          id="how" 
+          className="mt-14 md:mt-18"
+          data-testid="how-it-works-section"
+          role="region"
+          aria-labelledby="how-it-works-title"
+        >
           <div className="mb-6">
-            <h3 className="font-display text-2xl md:text-3xl glow-title" style={{ color: 'var(--foreground)' }}>
+            <h3 
+              id="how-it-works-title"
+              className="font-display text-2xl md:text-3xl glow-title-secondary" 
+              style={{ color: 'var(--accent-secondary)' }}
+            >
               Cómo funciona
             </h3>
             <p className="mt-2" style={{ color: 'var(--foreground-muted)' }}>
@@ -467,24 +637,41 @@ export default function AutoComparador() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list">
             {[
               { t: '1) Buscás una vez', d: 'Consultamos múltiples fuentes en paralelo y estandarizamos los resultados.' },
               { t: '2) Filtrás fácil', d: 'Año, km, provincia y más. Menos ruido, más señales útiles.' },
               { t: '3) Abrís el aviso original', d: 'Te llevamos al link del marketplace para que contactes al vendedor.' },
-            ].map((x) => (
-              <div key={x.t} className="rounded-2xl border p-5 card-hover" style={{ borderColor: 'var(--border)', background: 'var(--background-card)', boxShadow: 'var(--shadow)' }}>
-                <div className="font-semibold mb-2" style={{ color: 'var(--foreground)' }}>{x.t}</div>
+            ].map((x, idx) => (
+              <div 
+                key={x.t} 
+                className="rounded-2xl border p-5 card-hover" 
+                style={{ borderColor: 'var(--border)', background: 'var(--background-card)', boxShadow: 'var(--shadow)' }}
+                data-testid={`how-step-${idx}`}
+                role="listitem"
+              >
+                <div className="font-semibold mb-2" style={{ color: 'var(--accent-secondary)' }}>{x.t}</div>
                 <div className="text-sm" style={{ color: 'var(--foreground-muted)' }}>{x.d}</div>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="mt-14">
+        <div className="my-16 border-t" style={{ borderColor: 'var(--border)' }} />
+
+        <section 
+          className="mt-14"
+          data-testid="partners-section"
+          role="region"
+          aria-labelledby="partners-title"
+        >
           <div className="flex items-end justify-between gap-4 mb-5">
             <div>
-              <h3 className="font-display text-2xl md:text-3xl glow-title" style={{ color: 'var(--foreground)' }}>
+              <h3 
+                id="partners-title"
+                className="font-display text-2xl md:text-3xl glow-title-tertiary" 
+                style={{ color: 'var(--accent-tertiary)' }}
+              >
                 Partners (próximamente)
               </h3>
               <p className="mt-2" style={{ color: 'var(--foreground-muted)' }}>
@@ -492,72 +679,16 @@ export default function AutoComparador() {
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-            {['MercadoLibre', 'Kavak', 'OLX', 'V6', 'Facebook'].map((p) => (
-              <div key={p} className="rounded-xl border p-4 text-center text-sm" style={{ borderColor: 'var(--border)', background: 'var(--background-card)', color: 'var(--foreground-muted)' }}>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3" role="list">
+            {['MercadoLibre', 'Kavak', 'OLX', 'V6', 'Facebook'].map((p, idx) => (
+              <div 
+                key={p} 
+                className="rounded-xl border p-4 text-center text-sm" 
+                style={{ borderColor: 'var(--border)', background: 'var(--background-card)', color: 'var(--foreground-muted)' }}
+                data-testid={`partner-${idx}`}
+                role="listitem"
+              >
                 {p}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-14">
-          <div className="rounded-2xl border p-6 md:p-8 card-hover" style={{ borderColor: 'var(--border)', background: 'var(--background-card)', boxShadow: 'var(--shadow)' }}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-              <div className="md:col-span-2">
-                <h3 className="font-display text-2xl md:text-3xl glow-title" style={{ color: 'var(--foreground)' }}>
-                  ¿Querés vender tu auto más rápido?
-                </h3>
-                <p className="mt-2" style={{ color: 'var(--foreground-muted)' }}>
-                  A futuro vamos a ofrecer herramientas para publicar mejor, comparar precios y sugerir dónde conviene vender.
-                </p>
-              </div>
-              <div className="flex md:justify-end">
-                <a
-                  href="#search"
-                  className="btn-soft px-6 py-3 rounded-xl font-semibold text-white text-center"
-                  style={{ background: 'var(--accent)' }}
-                >
-                  Volver a la búsqueda
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-14">
-          <h3 className="font-display text-2xl md:text-3xl glow-title" style={{ color: 'var(--foreground)' }}>
-            Lo que importa (y por qué)asd
-          </h3>
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { t: 'Sin duplicados (meta)', d: 'Normalizamos títulos y datos para agrupar publicaciones similares.' },
-              { t: 'Orden útil', d: 'Podés ordenar por precio, año o km (próximo paso), y guardar favoritos.' },
-              { t: 'Velocidad', d: 'Cache, paginación y límites para que sea rápido incluso con varias fuentes.' },
-              { t: 'Transparencia', d: 'Siempre mostramos de dónde viene cada resultado y link al aviso original.' },
-            ].map((x) => (
-              <div key={x.t} className="rounded-2xl border p-5" style={{ borderColor: 'var(--border)', background: 'var(--background-card)' }}>
-                <div className="font-semibold" style={{ color: 'var(--foreground)' }}>{x.t}</div>
-                <div className="text-sm mt-2" style={{ color: 'var(--foreground-muted)' }}>{x.d}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-14 mb-10">
-          <h3 className="font-display text-2xl md:text-3xl glow-title" style={{ color: 'var(--foreground)' }}>
-            FAQ
-          </h3>
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { q: '¿Es un marketplace?', a: 'No. Somos un agregador: te mostramos resultados y te llevamos al aviso original.' },
-              { q: '¿Qué fuentes están integradas?', a: 'Vamos a integrar varias. Por ahora, algunas están en desarrollo (y otras requieren acuerdos).' },
-              { q: '¿Es gratis?', a: 'La idea es que la búsqueda sea gratis. Luego veremos opciones premium para vendedores/profesionales.' },
-              { q: '¿Cómo gano confianza en los resultados?', a: 'Mostramos fuente + link, y luego sumaremos reputación, duplicados y detección de outliers.' },
-            ].map((x) => (
-              <div key={x.q} className="rounded-2xl border p-5" style={{ borderColor: 'var(--border)', background: 'var(--background-card)' }}>
-                <div className="font-semibold" style={{ color: 'var(--foreground)' }}>{x.q}</div>
-                <div className="text-sm mt-2" style={{ color: 'var(--foreground-muted)' }}>{x.a}</div>
               </div>
             ))}
           </div>
