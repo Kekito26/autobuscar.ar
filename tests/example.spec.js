@@ -11,7 +11,7 @@ test.beforeEach('login', async ({ page }) => {
   //await page.pause();
   await page.getByTestId('user-menu-trigger').click();
   await expect(page.getByTestId('user-menu-profile')).toBeVisible();
-  await page.pause();
+  //await page.pause();
 });
 
 test('user search', async ({ page }) => {
