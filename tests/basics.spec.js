@@ -20,3 +20,10 @@ test('user search', async ({ page }) => {
   await expect(page.getByTestId('search-input')).toBeVisible();
 });
 
+test('how it works', async ({ page }) => {
+  await page.goto('https://autobuscar-ar-web.vercel.app/');
+  await page.getByTestId('hero-cta-how').click();
+  await expect(page.getByRole('heading', { name: '¿Cómo funciona?' })).toBeVisible();
+});
+
+
